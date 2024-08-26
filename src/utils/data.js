@@ -120,6 +120,57 @@ export const pinDetailMorePinQuery = (pin) => {
 };
 
 
+export const userCreatedPinsQuery = (userId) => {
+  const query = `*[ _type == 'gallery' && userId == '${userId}'] | order(_createdAt desc){
+    image{
+      asset->{
+        url
+      }
+    },
+    _id,
+    destination,
+    postedBy->{
+      _id,
+      userName,
+      image
+    },
+    save[]{
+      postedBy->{
+        _id,
+        userName,
+        image
+      },
+    },
+  }`;
+  return query;
+};
+
+export const userSavedPinsQuery = (userId) => {
+  const query = `*[_type == 'gallery' && '${userId}' in save[].userId ] | order(_createdAt desc) {
+    image{
+      asset->{
+        url
+      }
+    },
+    _id,
+    destination,
+    postedBy->{
+      _id,
+      userName,
+      image
+    },
+    save[]{
+      postedBy->{
+        _id,
+        userName,
+        image
+      },
+    },
+  }`;
+  return query;
+};
+
+
 export const searchQuery = (categoryId) => {
   const query = `*[_type == 'gallery' && (title match '${categoryId}*' || category match '${categoryId}*' || about match '${categoryId}*')]{
         image {
