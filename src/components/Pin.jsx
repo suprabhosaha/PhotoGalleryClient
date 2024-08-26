@@ -17,7 +17,7 @@ const Pin = ({ pin: { destination, postedBy, image, _id, save } }) => {
     const userInfo = fetchUser();
     const [postHovered, setPostHovered] = useState(false);
 
-    const alreadySaved = !!(save?.filter((item) => item.postedBy._id === userInfo?.sub))?.length;
+    const alreadySaved = !!(save?.filter((item) => item?.postedBy?._id === userInfo?.sub))?.length;
 
     const savePin = (_id) => {
         if (!alreadySaved) {
@@ -91,7 +91,7 @@ const Pin = ({ pin: { destination, postedBy, image, _id, save } }) => {
                                     {destination.length > 20 ? destination.slice(8, 20).concat("...") : destination.slice(8)}
                                 </a>
                             )}
-                            {postedBy._id === userInfo?.sub && (
+                            {postedBy?._id === userInfo?.sub && (
                                 <button
                                     type="button"
                                     className="bg-white p-2 opacity-70 hover:opacity-100 font-bold text-base rounded-3xl hover:shadow-md outline-none"
@@ -107,7 +107,7 @@ const Pin = ({ pin: { destination, postedBy, image, _id, save } }) => {
                 )}
             </div>
             <Link
-                to={`user-profile/${postedBy._id}`}
+                to={`user-profile/${postedBy?._id}`}
                 className="flex gap-2 mt-2 px-2 items-center">
                 <img src={ postedBy?.image } alt="User Profile" className="w-8 h-8 rounded-full object-cover" />
                 <p className="font-semibold capitalize">{ postedBy?.userName }</p>
