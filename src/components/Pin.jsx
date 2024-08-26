@@ -17,17 +17,17 @@ const Pin = ({ pin: { destination, postedBy, image, _id, save } }) => {
     const userInfo = fetchUser();
     const [postHovered, setPostHovered] = useState(false);
 
-    const alreadySaved = !!(save?.filter((item) => item.postedBy._id === userInfo.sub))?.length;
+    const alreadySaved = !!(save?.filter((item) => item.postedBy._id === userInfo?.sub))?.length;
 
     const savePin = (_id) => {
         if (!alreadySaved) {
 
             client.patch(_id).setIfMissing({ save: [] }).insert("after", "save[-1]", [{
                 _key: uuidv4(),
-                userId: userInfo.sub,
+                userId: userInfo?.sub,
                 postedBy: {
                     _type: 'postedBy',
-                    _ref: userInfo.sub
+                    _ref: userInfo?.sub
                 }
             }]).commit().then(() => {
                 window.location.reload();
@@ -91,7 +91,7 @@ const Pin = ({ pin: { destination, postedBy, image, _id, save } }) => {
                                     {destination.length > 20 ? destination.slice(8, 20).concat("...") : destination.slice(8)}
                                 </a>
                             )}
-                            {postedBy._id === userInfo.sub && (
+                            {postedBy._id === userInfo?.sub && (
                                 <button
                                     type="button"
                                     className="bg-white p-2 opacity-70 hover:opacity-100 font-bold text-base rounded-3xl hover:shadow-md outline-none"
